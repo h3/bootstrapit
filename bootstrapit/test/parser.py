@@ -31,21 +31,28 @@ class TYPE:
 
     Unknow=404
 
-class var:
-    name =""
-    app = ""
-    type = TYPE.Unknow
-    value =0
-    
+class obj:
 
-def ComType(txt):
+    def __init__(self,name,app,type,value=0):
+        self.name = name
+        self.app = app
+        self.type = type
+        self.value = value
+
+    def __str__(self):
+        return "%s %d %s" % (self.name,self.type,self.value)
+    
+def ComType(txt,nb_line):
     size = len(txt)
-    if txt[-1] == ';'
+    if txt[-1] == ';':
         return None
     if size >=5:
-        if txt[].islower():
+        if nb_line < 5:
             return "desc"
-        return "app"
+        if txt[4].islower():
+            return "small"
+            nb_line = 0
+        return "big"
     return None
 
 def TxtType(txt):
@@ -60,37 +67,50 @@ def tofloat(txt):
         return float(i)
     return None
 
-var = []
-last_big_title =""
-last_small_title = ""
-last_des = ""
-for line in content.split('\n'):
-    if len(txt)< 5:
-        continue
+def main():
+    var = []
+    last_big_title =""
+    last_small_title = ""
+    last_des = ""
+    nb_line  = 0 
+    for line in content.split('\n'):
+        line = line.strip()
+        nb_line += 1
+        if len(line)< 5:
+            continue
+        if line.startswith('//'):
+            if line[3] == line[4] and line[4] == "-":
+                continue
+            d = ComType(line,nb_line)
+            if d == "small":
+                last_small_title = line
+            elif d == "big":
+                last_big_title = line
+            else:
+                last_des = line
+            continue
+        print last_big_title,last_small_title,last_des
 
-    if line.startswith('//'):
-        type = ComType(line)
+        line = line.split(':')[1].strip()
+        o = None
+        if '"' in line or "'" in line:
+            o = obj(last_big_title,last_small_title,TxtType(line),line)
 
-    if '"' in txt or "'" in txt:
-        TxtType(line)
-
-    if any('(' in line,'+' in line,'*' in line,'-' in line,' / ' in line):
-        #calculate to ignore
-        continue
-
-    if '@' in line:
-        continue
-
-    if '#' in line:
-        continue
-
-    if 'px' in line:
-        continue
-
-    if "%" in line:
-        continue
+        elif any(('(' in line,'+' in line,'*' in line,'-' in line,' / ' in line)):
+            o = obj(last_big_title,last_small_title,TYPE.Reference,line)
+        elif '@' in line:
+            o = obj(last_big_title,last_small_title,TYPE.Reference,tofloat(line))
+        elif '#' in line:
+            o = obj(last_big_title,last_small_title,TYPE.Color,tofloat(line))
+        elif 'px' in line:
+            o = obj(last_big_title,last_small_title,TYPE.Pix,tofloat(line))
+        elif "%" in line:
+            o = obj(last_big_title,last_small_title,TYPE.Percent,tofloat(line))
 
 
+#        print o
+
+main()
 
 
 
