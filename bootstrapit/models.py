@@ -19,7 +19,7 @@ class BootstrapVersion(models.Model):
     def GetCssUrl(self):
         return os.path.join(settings.MEDIA_URL,self.store,'doc/assets/css/bootstrap.css')
 
-    def GetCssUrl(self):
+    def GetJsUrl(self):
         return os.path.join(settings.MEDIA_URL,self.store,'doc/assets/js/bootstrap.min.js')
 
     def GetVar(self):
