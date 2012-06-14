@@ -1,58 +1,49 @@
-#firt lines of variables.less
-
-content = """// Variables.less
-// Variables to customize the look and feel of Bootstrap
-// -----------------------------------------------------
-
-// Type Test
-// -------------------------
-//@fluidGridColumnWidth:    6.382978723%;
-@iconSpritePath:          "../img/glyphicons-halflings.png";
-@sansFontFamily:        "Helvetica Neue", Helvetica, Arial, sans-serif;
-@fluidGridColumnWidth:      1% * ((@gridColumnWidth * 100) / @gridRowWidth);
-@linkColorHover:        darken(@linkColor, 15%);
-@bodyBackground:        @white;
-@baseFontFamily:        @sansFontFamily;
-@black:                 #000;
-@baseFontSize:          13px;
-//@fluidGridColumnWidth:    6.382978723%;
-@zindexDropdown:          1000;
-"""
+import json
 
 class TYPE:
-    Color=1
-    Pix=2
-    Percent=3
-    Nombre=4
-    Txt=5
-    File=6
-    Reference=7
-    Calulate=8
 
-    Unknow=404
+    Color="#"
+    Pix="px"
+    Percent="%"
+    Nombre="nb"
+    Txt="txt"
+    File="file"
+    Reference="ref"
+    Calulate="calc"
+
+    Unknow="404"
 
 class obj:
 
-    def __init__(self,name,app,type,value=0):
+    def __init__(self,name,app,subapp,type,value=0):
         self.name = name
         self.app = app
+        self.subapp = subapp
         self.type = type
         self.value = value
 
     def __str__(self):
-        return "%s %d %s" % (self.name,self.type,self.value)
+        return "<%s> <%s>.<%s> <%s> <%s>" % (self.name,self.app,self.subapp,self.type,self.value)
+
+    def todict(self):
+        return {'name' : self.name,
+                'app' : self.app,
+                'subapp' : self.subapp,
+                'type' : self.type,
+                'value' : self.value}
     
 def ComType(txt,nb_line):
     size = len(txt)
     if txt[-1] == ';':
         return None
     if size >=5:
-        if nb_line < 5:
+        if nb_line < 10:
             return "desc"
-        if txt[4].islower():
+        if txt[4].islower() and not txt[3].islower():
             return "small"
+        elif not txt[3].islower() and not txt[4].islower() and not any(('-' in txt[4],'/' in txt[4], "_" in txt[4])):
             nb_line = 0
-        return "big"
+            return "big"
     return None
 
 def TxtType(txt):
@@ -67,13 +58,14 @@ def tofloat(txt):
         return float(i)
     return None
 
-def main():
-    var = []
+def FileVarToJson(filename):
+    vars = []
     last_big_title =""
     last_small_title = ""
     last_des = ""
-    nb_line  = 0 
-    for line in content.split('\n'):
+    nb_line  = 10
+    content =  file(filename,'r').read().split('\n')[3:]
+    for line in content:
         line = line.strip()
         nb_line += 1
         if len(line)< 5:
@@ -83,36 +75,42 @@ def main():
                 continue
             d = ComType(line,nb_line)
             if d == "small":
-                last_small_title = line
+                last_small_title = line[2:].strip()
             elif d == "big":
-                last_big_title = line
+                last_big_title = line[2:].strip()
             else:
-                last_des = line
+                last_des = line[2:].strip()
             continue
-        print last_big_title,last_small_title,last_des
+        #print [last_big_title,last_small_title,last_des]
 
-        line = line.split(':')[1].strip()
+        var,line = line.split(':')
+        line = line.strip().replace(';','')
+        var = var.replace('@','').strip()
         o = None
         if '"' in line or "'" in line:
-            o = obj(last_big_title,last_small_title,TxtType(line),line)
+            o = obj(var,last_big_title,last_small_title,TxtType(line),line)
 
         elif any(('(' in line,'+' in line,'*' in line,'-' in line,' / ' in line)):
-            o = obj(last_big_title,last_small_title,TYPE.Reference,line)
+            o = obj(var,last_big_title,last_small_title,TYPE.Calulate,line)
         elif '@' in line:
-            o = obj(last_big_title,last_small_title,TYPE.Reference,tofloat(line))
+            o = obj(var,last_big_title,last_small_title,TYPE.Reference,line)
         elif '#' in line:
-            o = obj(last_big_title,last_small_title,TYPE.Color,tofloat(line))
+            o = obj(var,last_big_title,last_small_title,TYPE.Color,line.replace('#',''))
         elif 'px' in line:
-            o = obj(last_big_title,last_small_title,TYPE.Pix,tofloat(line))
+            o = obj(var,last_big_title,last_small_title,TYPE.Pix,tofloat(line))
         elif "%" in line:
-            o = obj(last_big_title,last_small_title,TYPE.Percent,tofloat(line))
+            o = obj(var,last_big_title,last_small_title,TYPE.Percent,tofloat(line))
+        else:
+            try:
+                f = float(line)
+                o = obj(var,last_big_title,last_small_title,TYPE.Nombre,f)
+            except:
+                o = obj(var,last_big_title,last_small_title,TYPE.Txt,line)
+        vars.append(o.todict())
 
-
-#        print o
-
-main()
-
-
+    return json.dumps(vars)
+    
+#print FileVarToJson('../less/variables.less')
 
 
 
