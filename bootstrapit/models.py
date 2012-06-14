@@ -3,6 +3,8 @@
 from django.db import models
 from bootstrapit.parser.parser import FileVarToJson
 import os
+from django.conf import settings
+from django.core.urlresolvers import reverse
 
 
 class BootstrapVersion(models.Model):
@@ -14,13 +16,19 @@ class BootstrapVersion(models.Model):
     def __unicode__(self):
         return "%s" % self.version
 
-    def GetCss(self):
-        return ''
+    def GetCssUrl(self):
+        return os.path.join(settings.MEDIA_URL,self.store,'doc/assets/css/bootstrap.css')
+
+    def GetCssUrl(self):
+        return os.path.join(settings.MEDIA_URL,self.store,'doc/assets/js/bootstrap.min.js')
 
     def GetVar(self):
         return FileVarToJson(
-                os.path.join(self.store,'less/variables.less')
+                os.path.join(settings.MEDIA_ROOT,self.store,'less/variables.less')
                 )
+    
+    def get_absolute_url(self):
+        return reverse('bootstrapversion-home',args=(self.slug))
 
     
 

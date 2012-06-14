@@ -22,7 +22,20 @@ class Version(View):
     
     def get(self,context,**kwargs):
         slug = kwargs.get('slug')
-        get_object_or_404(BootstrapVersion,slug=slug)
+        obj = get_object_or_404(BootstrapVersion,slug=slug)
+        return HttpResponse(obj)
+
+
+class JsonVersion(View):
+
+    def get_context_data(self, **kwargs):
+        context = super(JsonVersion, self).get_context_data(**kwargs)
+        context['content_type']='application/json'
+        return context
+    
+    def get(self,context,**kwargs):
+        slug = kwargs.get('slug')
+        obj = get_object_or_404(BootstrapVersion,slug=slug)
         return HttpResponse(
-                'test'
+              obj.GetVar()  
             )
