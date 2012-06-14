@@ -85,7 +85,7 @@ def FileVarToJson(filename):
         #print [last_big_title,last_small_title,last_des]
 
         var,line = line.split(':')
-        line = line.strip().replace(';','')
+        line = line[:line.find('/')].replace(';','').strip()
         var = var.replace('@','').strip()
         o = None
         if '"' in line or "'" in line:
