@@ -6,7 +6,7 @@ import os
 
 
 class BootstrapVersion(models.Model):
-    version = models.CharField('version',max_length=255)
+    version = models.CharField('version',max_length=255,unique=True)
     slug = models.SlugField('slug',max_length=255)
     url = models.URLField('depo url',max_length=255)
     store = models.CharField('store path',max_length=255,blank=True)
