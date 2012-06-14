@@ -26,7 +26,8 @@ class obj:
         return "<%s> <%s>.<%s> <%s> <%s>" % (self.name,self.app,self.subapp,self.type,self.value)
 
     def todict(self):
-        return {'name' : self.name,
+        return {
+                #'name' : self.name,
                 'app' : self.app,
                 'subapp' : self.subapp,
                 'type' : self.type,
@@ -59,7 +60,7 @@ def tofloat(txt):
     return None
 
 def FileVarToJson(filename):
-    vars = []
+    vars = {}
     last_big_title =""
     last_small_title = ""
     last_des = ""
@@ -106,7 +107,7 @@ def FileVarToJson(filename):
                 o = obj(var,last_big_title,last_small_title,TYPE.Nombre,f)
             except:
                 o = obj(var,last_big_title,last_small_title,TYPE.Txt,line)
-        vars.append(o.todict())
+        vars.update({var :o.todict()})
 
     return json.dumps(vars)
     
