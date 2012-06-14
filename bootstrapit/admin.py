@@ -6,4 +6,11 @@ from django.contrib import admin
 #from webcore.utils.admin import AdminThumbnailMixin
 #from grappellifit.admin import TranslationAdmin
 from bootstrapit.models import *
+from bootstrapit.forms import *
 
+
+class BootstrapVersionAdmin(admin.ModelAdmin):
+    list_display = ('version','slug','url')
+    prepopulated_fields = {"slug": ("version",)}
+    form = BootstrapVersionForm
+admin.site.register(BootstrapVersion,BootstrapVersionAdmin)
