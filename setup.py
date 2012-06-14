@@ -3,8 +3,7 @@ from setuptools import setup, find_packages
 VERSION = '0.0.1'
 
 install_requires = [
-   #'simplejson',
-   #'PyYAML',
+    'GitPython',
 ]
 
 setup(
