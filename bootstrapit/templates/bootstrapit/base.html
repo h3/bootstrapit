@@ -6,13 +6,16 @@
         <!--[if lt IE 9]>
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
-        <link href="{{ MEDIA_URL }}/bootstrap/2/docs/assets/css/docs.css" rel="stylesheet">  
-        <link href="{{ MEDIA_URL }}/bootstrap/2/docs/assets/css/bootstrap.css" rel="stylesheet">
-        {#<link href="{{ MEDIA_URL }}/bootstrap/2/docs/assets/css/bootstrap-responsive.css" rel="stylesheet">#}
-        <script src="{{ MEDIA_URL }}/bootstrap/2/docs/assets/js/jquery.js"></script>
-        <script src="{{ MEDIA_URL }}/bootstrap/2/docs/assets/js/bootstrap.js"></script>
+        {#<link href="{{ MEDIA_URL }}bootstrap/2/docs/assets/css/docs.css" rel="stylesheet">#}
+        {#<link href="{{ MEDIA_URL }}bootstrap/2/docs/assets/css/bootstrap.css" rel="stylesheet">#}
+        {#<link href="{{ MEDIA_URL }}bootstrap/2/docs/assets/css/bootstrap-responsive.css" rel="stylesheet">#}
+        <script src="{{ MEDIA_URL }}bootstrap/2/docs/assets/js/jquery.js"></script>
+        <script src="{{ MEDIA_URL }}bootstrap/2/docs/assets/js/bootstrap.js"></script>
+        {#<link id="test" href="{{ STATIC_URL }}bootstrapit/less/test.less" rel="stylesheet/less" type="text/css">#}
+        <link id="test" href="{{ MEDIA_URL }}bootstrap/2/less/bootstrap.less" rel="stylesheet/less" type="text/css">
+        <script src="{{ STATIC_URL }}bootstrapit/js/less-1.3.0.min.js"></script>
     </head>
-    <body data-spy="scroll" data-target=".subnav" data-offset="50">
+    <body>
     {% block content %}{% endblock %}
     </body>
 </html>
