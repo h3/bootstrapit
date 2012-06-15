@@ -14,8 +14,22 @@
         {#<link id="test" href="{{ STATIC_URL }}bootstrapit/less/test.less" rel="stylesheet/less" type="text/css">#}
         <link id="test" href="{{ MEDIA_URL }}bootstrap/2/less/bootstrap.less" rel="stylesheet/less" type="text/css">
         <script src="{{ STATIC_URL }}bootstrapit/js/less-1.3.0.min.js"></script>
+        <script src="{{ STATIC_URL }}bootstrapit/CodeMirror-2.25/lib/codemirror.js"></script>
+        <script src="{{ STATIC_URL }}bootstrapit/CodeMirror-2.25/mode/less/less.js"></script>
+        <link rel="stylesheet" href="{{ STATIC_URL }}bootstrapit/CodeMirror-2.25/lib/codemirror.css">
+        <script>
+        $(function(){
+            var cm = CodeMirror($('#editor').get(0));
+            $.get('{{ MEDIA_URL }}bootstrap/2/less/wells.less', function(rs, statusCode) {
+                if (statusCode == 'success') {
+                    cm.setValue(rs);
+                }
+            });
+        });
+        </script>
     </head>
     <body>
+    <div id="editor"></div>
     {% block content %}{% endblock %}
     </body>
 </html>
