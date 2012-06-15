@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+        <link href="{{ MEDIA_URL }}/bootstrap/2/docs/assets/css/docs.css" rel="stylesheet">  
+        <link href="{{ MEDIA_URL }}/bootstrap/2/docs/assets/css/bootstrap.css" rel="stylesheet">
+        {#<link href="{{ MEDIA_URL }}/bootstrap/2/docs/assets/css/bootstrap-responsive.css" rel="stylesheet">#}
+        <script src="{{ MEDIA_URL }}/bootstrap/2/docs/assets/js/jquery.js"></script>
+        <script src="{{ MEDIA_URL }}/bootstrap/2/docs/assets/js/bootstrap.js"></script>
+    </head>
+    <body data-spy="scroll" data-target=".subnav" data-offset="50">
+    {% block content %}{% endblock %}
+    </body>
+</html>
