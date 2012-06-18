@@ -47,12 +47,15 @@
             $(window).trigger('resize.bootstrapit');
             this.loadFile(lesspath + filename, editor);
 
-            return {
+            this.buffers[filename] = {
                 title: title,
                 filename: filename,
                 viewport: viewport,
                 editor: editor,
             };
+
+            return this.buffers[filename];
+
         };
 
         this.showViewport = function(filename) {
