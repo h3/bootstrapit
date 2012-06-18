@@ -20,6 +20,9 @@ Inspired by http://css3please.com/
   margin: 0;
   padding: 0; }
 
+body {
+  margin-top: 15px; }
+
 .CodeMirror {
   border: 1px solid #ccc;
   height: 600px; }
