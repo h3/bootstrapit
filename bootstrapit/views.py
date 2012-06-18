@@ -7,6 +7,11 @@ from bootstrapit.models import *
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 
+
+class EditorView(TemplateView):
+    template_name = 'bootstrapit/editor.html'
+
+
 class DesignView(TemplateView):
     template_name = 'bootstrapit/design.html'
 #   def get_context_data(self, **kwargs):

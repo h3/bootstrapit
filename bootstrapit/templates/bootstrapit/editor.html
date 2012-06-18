@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Bootstrapit Editor</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+        <link href="{{ MEDIA_URL }}bootstrap/2/docs/assets/css/bootstrap.css" rel="stylesheet">
+        <link href="{{ MEDIA_URL }}bootstrap/2/docs/assets/css/bootstrap-responsive.css" rel="stylesheet">
+        <script src="{{ MEDIA_URL }}bootstrap/2/docs/assets/js/jquery.js"></script>
+        <script src="{{ MEDIA_URL }}bootstrap/2/docs/assets/js/bootstrap.js"></script>
+        <script src="{{ STATIC_URL }}bootstrapit/CodeMirror-2.25/lib/codemirror.js"></script>
+        <script src="{{ STATIC_URL }}bootstrapit/CodeMirror-2.25/mode/less/less.js"></script>
+        <link rel="stylesheet" href="{{ STATIC_URL }}bootstrapit/CodeMirror-2.25/lib/codemirror.css">
+        <link rel="stylesheet" href="{{ STATIC_URL }}bootstrapit/css/editor.css">
+        <script>
+        (function($){
+
+            $(window).bind('resize.bootstrapit', function(e) {
+                var h = $(window).height() - 135;
+                $('.CodeMirror').height(h)
+                    .find('.CodeMirror-scroll').height(h); // Weird ..
+            });
+
+
+            $('.cm-number')
+                .live('mouseover', function() {
+                    if ($(this).text()[0] == '#') {
+                        $(this).css('background', $(this).text());
+                    }
+                })
+                .live('mouseleave', function() {
+                    $(this).css('background', 'transparent');
+                });
+
+            $.bootstrapit = (function() {
+
+                this.preview = window.parent;
+                this.buffers = {};
+
+                this.createEditor = function(element) {
+                    return CodeMirror(element.get(0), {
+                        dynamic: true
+                    });
+                };
+
+                this.createViewport = function(filename, title) {
+                    $('.viewport').hide();
+                    var viewport = $([
+                        '<div class="viewport" data-file="', filename,'">',
+                            '<h1>',
+                                '<span class="viewport-title">', title, ' </span>',
+                                '<small class="viewport-filename">', filename, '</small>',
+                            '</h1>',
+                            '<div class="viewport-content" />',
+                        '</div>'].join('')).appendTo('#bootstrapit-editor');
+
+                    var editor = this.createEditor(
+                                    viewport.find('.viewport-content'));
+                    $(window).trigger('resize.bootstrapit');
+                    this.loadFile('{{ MEDIA_URL }}bootstrap/2/less/' + filename, editor);
+
+                    return {
+                        title: title,
+                        filename: filename,
+                        viewport: viewport,
+                        editor: editor,
+                    };
+                };
+
+                this.showViewport = function(filename) {
+                    $('.viewport').hide();
+                    return this.buffers[filename].viewport.show();
+                };
+
+                this.loadFile = function(path, editor) {
+                    $.get(path, function(rs, statusCode) {
+                        if (statusCode == 'success') {
+                            editor.setValue(rs);
+                        }
+                    });
+                };
+
+                return this;
+            })();
+
+            $(function(){
+                $('.bootstrapit-file').bind('click.bootstrapit', function(e){
+                    var a = $(this),
+                        filename = a.attr('href').replace('#', '');
+                    if (a.data('editor-viewport')) {
+                        $.bootstrapit.showViewport(filename);
+                    }
+                    else {
+                        a.data('editor-viewport', 
+                            $.bootstrapit.createViewport(filename, a.text()));
+                    }
+                });
+            });
+        })(jQuery);
+        </script>
+        <style>
+        body {
+            margin-top: 15px;
+        }
+        </style>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="navbar">
+                        <div class="navbar-inner">
+                            <div class="container">
+                                <span class="brand">Bootstrap<b><em style="color:white;">it</em></b></span>
+                                <ul class="nav">
+                                    <li class="active"><a href="#">Save</a></li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">General <b class="caret"></b></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="bootstrapit-file" href="#variables.less">Variables</a></li>
+                                            <li><a class="bootstrapit-file" href="#mixins.less">Mixins</a></li>
+                                            <li><a class="bootstrapit-file" href="#reset.less">Reset</a></li>
+                                            <li><a class="bootstrapit-file" href="#sprites.less">Sprites</a></li>
+                                            <li><a class="bootstrapit-file" href="#utilities.less">Utilities</a></li>
+                                            <li><a class="bootstrapit-file" href="#close.less">Close icons</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Base CSS<b class="caret"></b></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="bootstrapit-file" href="#type.less">Typography</a></li>
+                                            <li><a class="bootstrapit-file" href="#code.less">Code</a></li>
+                                            <li><a class="bootstrapit-file" href="#tables.less">Tables</a></li>
+                                            <li><a class="bootstrapit-file" href="#forms.less">Forms</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Scaffolding <b class="caret"></b></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="bootstrapit-file" href="#scaffolding.less">Global styles</a></li>
+                                            <li><a class="bootstrapit-file" href="#grid.less">Grid system</a></li>
+                                            <li><a class="bootstrapit-file" href="#layouts.less">Layouts</a></li>
+                                            <li class="divider"></li>
+                                            <li class="nav-header">Responsive design</li>
+                                            <li><a class="bootstrapit-file" href="#responsive-767px-max.less">767px max</a></li>
+                                            <li><a class="bootstrapit-file" href="#responsive-768px-979px.less">768px - 979px</a></li>
+                                            <li><a class="bootstrapit-file" href="#responsive-1200px-min.less">1200px min</a></li>
+                                            <li><a class="bootstrapit-file" href="#responsive-navbar.less">Navbar</a></li>
+                                            <li><a class="bootstrapit-file" href="#responsive-utilities.less">Utilities</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Components <b class="caret"></b></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="bootstrapit-file" href="#buttons.less">Buttons</a></li>
+                                            <li><a class="bootstrapit-file" href="#buttons-groups.less">Buttons groups</a></li>
+                                            <li><a class="bootstrapit-file" href="#dropdowns.less">Dropdowns</a></li>
+                                            <li><a class="bootstrapit-file" href="#labels-badges.less">Labels & Badges</a></li>
+                                            <li><a class="bootstrapit-file" href="#thumbnails.less">Thumbnails</a></li>
+                                            <li><a class="bootstrapit-file" href="#alerts.less">Alerts</a></li>
+                                            <li><a class="bootstrapit-file" href="#progress-bars.less">Progress bars</a></li>
+                                            <li class="divider"></li>
+                                            <li class="nav-header">Menus</li>
+                                            <li><a class="bootstrapit-file" href="#navs.less">Navigations</a></li>
+                                            <li><a class="bootstrapit-file" href="#navbar.less">Navbar</a></li>
+                                            <li><a class="bootstrapit-file" href="#pager.less">Pager</a></li>
+                                            <li><a class="bootstrapit-file" href="#breadcrumbs.less">Breadcrumbs</a></li>
+                                            <li class="divider"></li>
+                                            <li class="nav-header">Miscellaneous</li>
+                                            <li><a class="bootstrapit-file" href="#hero-unit.less">Hero unit</a></li>
+                                            <li><a class="bootstrapit-file" href="#wells.less">Wells</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Plugins <b class="caret"></b></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="bootstrapit-file" href="#modals.less">Modal</a></li>
+                                            <li><a class="bootstrapit-file" href="#dropdowns.less">Dropdown</a></li>
+                                            <li><a class="bootstrapit-file" href="#tooltip.less">Tooltip</a></li>
+                                            <li><a class="bootstrapit-file" href="#popovers.less">Popover</a></li>
+                                            <li><a class="bootstrapit-file" href="#carousel.less">Carousel</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="bootstrapit-editor"></div>
+        </div>
+    </body>
+</html>

@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title></title>
+        <title>bootstrapit</title>
         <!--[if lt IE 9]>
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
@@ -17,19 +17,15 @@
         <script src="{{ STATIC_URL }}bootstrapit/CodeMirror-2.25/lib/codemirror.js"></script>
         <script src="{{ STATIC_URL }}bootstrapit/CodeMirror-2.25/mode/less/less.js"></script>
         <link rel="stylesheet" href="{{ STATIC_URL }}bootstrapit/CodeMirror-2.25/lib/codemirror.css">
+        <link rel="stylesheet" href="{{ STATIC_URL }}bootstrapit/css/site.css">
         <script>
+        var w;
         $(function(){
-            var cm = CodeMirror($('#editor').get(0));
-            $.get('{{ MEDIA_URL }}bootstrap/2/less/wells.less', function(rs, statusCode) {
-                if (statusCode == 'success') {
-                    cm.setValue(rs);
-                }
-            });
+            w = open("/editor")
         });
         </script>
     </head>
     <body>
-    <div id="editor"></div>
-    {% block content %}{% endblock %}
+        {% block content %}{% endblock %}
     </body>
 </html>
