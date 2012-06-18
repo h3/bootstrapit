@@ -13,8 +13,11 @@
         <script src="{{ MEDIA_URL }}bootstrap/2/docs/assets/js/bootstrap.js"></script>
         <script src="{{ STATIC_URL }}bootstrapit/CodeMirror-2.25/lib/codemirror.js"></script>
         <script src="{{ STATIC_URL }}bootstrapit/CodeMirror-2.25/mode/less/less.js"></script>
-        <link rel="stylesheet" href="{{ STATIC_URL }}bootstrapit/CodeMirror-2.25/lib/codemirror.css">
-        <link rel="stylesheet" href="{{ STATIC_URL }}bootstrapit/css/editor.css">
+        <link href="{{ STATIC_URL }}bootstrapit/CodeMirror-2.25/lib/codemirror.css" rel="stylesheet">
+        <link href="{{ STATIC_URL }}bootstrapit/css/editor.css" rel="stylesheet">
+
+        <link href="{{ STATIC_URL }}bootstrapit/colorpicker/css/colorpicker.css" rel="stylesheet">
+        <script src="{{ STATIC_URL }}bootstrapit/colorpicker/js/bootstrap-colorpicker.js"></script>
         <script>
         (function($){
 
@@ -59,6 +62,7 @@
 
                     var editor = this.createEditor(
                                     viewport.find('.viewport-content'));
+
                     $(window).trigger('resize.bootstrapit');
                     this.loadFile('{{ MEDIA_URL }}bootstrap/2/less/' + filename, editor);
 
@@ -79,6 +83,15 @@
                     $.get(path, function(rs, statusCode) {
                         if (statusCode == 'success') {
                             editor.setValue(rs);
+                            $(editor.getWrapperElement()).find('.cm-number')
+                                .each(function(i, el){
+                                    var t = $(el).text()
+                                    if (t.slice(0,1) == '#' && (t.length == 4 || t.length == 7)) {
+                                        $(el).data('color', t).colorpicker().on('changeColor', function(ev){
+                                            $(this).text(ev.color.toHex());
+                                        });
+                                    }
+                                })
                         }
                     });
                 };
