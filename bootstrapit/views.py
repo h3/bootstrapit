@@ -39,7 +39,7 @@ class JSONResponseMixin(object):
         return json.dumps(context)
 
 
-class EditorBackend(JSONResponseMixin, View): #, ProcessFormView
+class EditorBackend(ProcessFormView, JSONResponseMixin):
     def post(self, request, *args, **kwargs):
         return self.render_to_response({'test': 'test1'})
 

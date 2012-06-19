@@ -20,6 +20,7 @@
         <script src="{{ STATIC_URL }}bootstrapit/js/editor.js"></script>
     </head>
     <body data-less-path="{{ MEDIA_URL }}bootstrap/2/less/">
+        {% csrf_token %}
         <div class="container-fluid">
             <div class="row-fluid">
                 <div class="span12">

@@ -92,9 +92,10 @@
 
         this.saveViewport = function(filename) {
             var vp = $.bootstrapit.getViewport(filename);
-            $.post('/api/editor', {
+            $.post('/api/editor/', {
                     filename: filename,
                     content: vp.editor.getValue(),
+                    csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val()
                 }, function(){
                     console.log('Saved..');
                 });
