@@ -11,6 +11,10 @@
         $.bootstrapit.saveViewport(vp);
     });
 
+    $('.viewport-close').live('click.bootstrapit', function(){
+        $(this).parents('.viewport').remove();
+    });
+
     $('.cm-number')
         .live('mouseover', function() {
             $(this).addClass('hover');
@@ -51,7 +55,7 @@
                                 '<li><a href="#layout.less">layout.less</a></li>',
                             '</ul>',
                             '<button class="btn viewport-save" data-loading-text="Saving...">Save</button>',
-                            '<button id="viewport-close" class="btn">Close</button>',
+                            '<button class="btn viewport-close">Close</button>',
                         '</div>',
                     '</div>',
                     '<h1>',
@@ -75,7 +79,6 @@
             };
 
             return this.viewports[filename];
-
         };
 
         this.showViewport = function(filename) {
