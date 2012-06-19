@@ -41,9 +41,8 @@ class JSONResponseMixin(object):
 
 class EditorBackend(JSONResponseMixin, View): #, ProcessFormView
     def post(self, request, *args, **kwargs):
-        return self.render_to_response({})
+        return self.render_to_response({'test': 'test1'})
 
-  
 
 class DesignView(TemplateView):
     template_name = 'bootstrapit/design.html'

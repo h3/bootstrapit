@@ -6,6 +6,10 @@
             .find('.CodeMirror-scroll').height(h); // Weird ..
     });
 
+    $('.viewport-save').live('click.bootstrapit', function(){
+        var vp = $(this).parents('.viewport').data('file');
+        $.bootstrapit.saveViewport(vp);
+    });
 
     $('.cm-number')
         .live('mouseover', function() {
@@ -22,7 +26,7 @@
     $.bootstrapit = (function() {
 
         this.preview = window.parent;
-        this.buffers = {};
+        this.viewports = {};
 
         this.createEditor = function(element) {
             return CodeMirror(element.get(0), {
@@ -46,8 +50,8 @@
                                 '<li><a href="#variables.less">variables.less</a></li>',
                                 '<li><a href="#layout.less">layout.less</a></li>',
                             '</ul>',
-                            '<button class="btn" data-loading-text="Saving...">Save</button>',
-                            '<button class="btn">Close</button>',
+                            '<button class="btn viewport-save" data-loading-text="Saving...">Save</button>',
+                            '<button id="viewport-close" class="btn">Close</button>',
                         '</div>',
                     '</div>',
                     '<h1>',
@@ -63,20 +67,34 @@
             $(window).trigger('resize.bootstrapit');
             this.loadFile(lesspath + filename, editor);
 
-            this.buffers[filename] = {
+            this.viewports[filename] = {
                 title: title,
                 filename: filename,
                 viewport: viewport,
-                editor: editor,
+                editor: editor
             };
 
-            return this.buffers[filename];
+            return this.viewports[filename];
 
         };
 
         this.showViewport = function(filename) {
             $('.viewport').hide();
-            return this.buffers[filename].viewport.show();
+            return this.viewports[filename].viewport.show();
+        };
+
+        this.getViewport = function(filename) {
+            return this.viewports[filename];
+        };
+
+        this.saveViewport = function(filename) {
+            var vp = $.bootstrapit.getViewport(filename);
+            $.post('/api/editor', {
+                    filename: filename,
+                    content: vp.editor.getValue(),
+                }, function(){
+                    console.log('Saved..');
+                });
         };
 
         this.loadFile = function(path, editor) {
