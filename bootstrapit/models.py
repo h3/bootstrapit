@@ -5,13 +5,14 @@ from bootstrapit.parser.parser import FileVarToJson
 import os
 from django.conf import settings
 from django.core.urlresolvers import reverse
-
+from django.utils.translation import ugettext_lazy as _
+from django.contrib.auth.models import User
 
 class BootstrapVersion(models.Model):
-    version = models.CharField('version',max_length=255,unique=True)
-    slug = models.SlugField('slug',max_length=255)
-    url = models.URLField('depo url',max_length=255)
-    store = models.CharField('store path',max_length=255,blank=True)
+    version = models.CharField(_('version'),max_length=255,unique=True)
+    slug = models.SlugField(_('slug'),max_length=255)
+    url = models.URLField(_('depo url'),max_length=255)
+    store = models.CharField(_('store path'),max_length=255,blank=True)
 
     def __unicode__(self):
         return "%s" % self.version
@@ -29,6 +30,34 @@ class BootstrapVersion(models.Model):
     
     def get_absolute_url(self):
         return reverse('bootstrapversion-home',args=(self.slug))
+
+
+class LessBaseFile(models.Model):
+    content = models.TextField(_('Content'))
+    name = models.CharField(_('Name'),max_length=255)
+    slug = models.SlugField(_('slug'),max_length=255)
+    BVersion = models.ForeignKey(BootstrapVersion)
+
+    class Meta:
+        unique_together = ("name","BVersion")
+        ordering = ('BVersion','name')
+
+    def get_absolute_url(self):
+        return ''
+
+    def __unicode__(self):
+        return "%s (%s)" % (self.name,self.BVersion)
+
+class Style(models.Model):
+    created = models.DateTimeField(_('created'))
+    owner = models.ForeignKey(User)
+
+
+class LessVertionFile(models.Model):
+    file = models.ForeignKey(LessBaseFile)
+    parent = models.ForeignKey("self")
+    project = models.ForeignKey(Style)
+    last_access = models.DateTimeField(_('last access'))
 
     
 
