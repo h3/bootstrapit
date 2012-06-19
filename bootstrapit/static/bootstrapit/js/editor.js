@@ -1,7 +1,7 @@
 (function($){
 
     $(window).bind('resize.bootstrapit', function(e) {
-        var h = $(window).height() - 135;
+        var h = $(window).height() - 110;
         $('.CodeMirror').height(h)
             .find('.CodeMirror-scroll').height(h); // Weird ..
     });
