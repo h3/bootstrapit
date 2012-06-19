@@ -26,3 +26,11 @@ body {
 .CodeMirror {
   border: 1px solid #ccc;
   height: 600px; }
+
+.cm-number {
+  border: 0; }
+  .cm-number.hex {
+    background: #c39; }
+
+.viewport .viewport-toolbar {
+  margin-top: 4px; }

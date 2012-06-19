@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.views.generic import ListView, TemplateView, DetailView, View
+from django.views.generic.edit import ProcessFormView
 from datetime import datetime
 
 from bootstrapit.models import *
@@ -12,6 +13,11 @@ from django import http
 
 class EditorView(TemplateView):
     template_name = 'bootstrapit/editor.html'
+
+#   def post(self, request, *args, **kwargs):
+#       return http.HttpResponse(content,  
+#                                content_type='application/json',  
+#                                **httpresponse_kwargs)  
 
 class JSONResponseMixin(object):  
     def render_to_response(self, context):  
@@ -32,10 +38,10 @@ class JSONResponseMixin(object):
         # -- can be serialized as JSON.  
         return json.dumps(context)
 
-class EditorReciveAjax(JSONResponseMixin,View):
+
+class EditorBackend(JSONResponseMixin, View): #, ProcessFormView
     def post(self, request, *args, **kwargs):
-        context = {}
-        return self.render_to_response(context)
+        return self.render_to_response({})
 
   
 

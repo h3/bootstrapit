@@ -9,12 +9,14 @@
 
     $('.cm-number')
         .live('mouseover', function() {
+            $(this).addClass('hover');
             if ($(this).text()[0] == '#') {
-                $(this).css('background', $(this).text());
+                $(this).css('border-right', '20px solid '+$(this).text());
             }
         })
         .live('mouseleave', function() {
-            $(this).css('background', 'transparent');
+            $(this).removeClass('hover');
+            $(this).css('border-right', 0);
         });
 
     $.bootstrapit = (function() {
@@ -34,6 +36,20 @@
                 lesspath = $('body').data('less-path'),
                 viewport = $([
                 '<div class="viewport" data-file="', filename,'">',
+                    '<div class="viewport-toolbar pull-right">',
+                        '<div class="btn-group">',
+                            '<button data-toggle="dropdown" class="btn dropdown-toggle">Buffers <span class="caret"></span></button>',
+                            '<ul id="open-buffers" class="dropdown-menu">',
+                                '<li><a href="#">Save all</a></li>',
+                                '<li><a href="#">Save and close all</a></li>',
+                                '<li class="divider"></li>',
+                                '<li><a href="#variables.less">variables.less</a></li>',
+                                '<li><a href="#layout.less">layout.less</a></li>',
+                            '</ul>',
+                            '<button class="btn" data-loading-text="Saving...">Save</button>',
+                            '<button class="btn">Close</button>',
+                        '</div>',
+                    '</div>',
                     '<h1>',
                         '<span class="viewport-title">', title, ' </span>',
                         '<small class="viewport-filename">', filename, '</small>',
