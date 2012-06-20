@@ -90,6 +90,21 @@
             return this.viewports[filename];
         };
 
+        this.getVersionChoice = function(choices){
+            console.log('get version choice ' + choices);
+            return true;
+        };
+
+        this.getThemeChoice = function(choices){
+            console.log('get theme choice ' + choices);
+            return true;
+        };
+
+        this.getLessFileChoice = function(choices){
+            console.log('get .less file choice ' + choices);
+            return true;
+        };
+
         this.saveViewport = function(filename) {
             var vp = $.bootstrapit.getViewport(filename);
             $.post('/api/editor/', {
@@ -99,6 +114,15 @@
                 }, function(json){
                     console.log(json);
                     if (json['status'] != 'ok'){
+                        if (json['status'] == 'BV' || json['status'] == 'BV-404'){
+                            getVersionChoice(json['choices']);
+                        }else if (json['status'] == 'theme' || json['status'] == 'theme-404'){
+                            getThemeChoice(json['choices']);
+                        }else if(json['status'] == 'file'){
+                            getLessFileChoice(json['choices']);
+                        }else{
+                            console.log('erreur inconnue');
+                        }
                     }else{
                     console.log('Saved..');
                     }
