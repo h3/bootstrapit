@@ -12,7 +12,9 @@
     });
 
     $('.viewport-close').live('click.bootstrapit', function(){
-        $(this).parents('.viewport').remove();
+        var vp = $(this).parents('.viewport').data('file');
+        $.bootstrapit.closeViewport(vp);
+        $('.viewport:first').show();
     });
 
     $('.cm-number')
@@ -38,6 +40,14 @@
             });
         };
 
+        this.updateBufferLists = function() {
+            $('.open-buffers-list .bootstrapit-file').remove();
+            $.each(this.viewports, function(i, vp){
+                $('<li><a href="#', vp.filename, '">', vp.filename, '</a></li>')
+                    .appendTo(vp.viewport.find('.open-buffers-list'));
+            });
+        },
+
         this.createViewport = function(filename, title) {
             $('.viewport').hide();
             var editor,
@@ -47,7 +57,7 @@
                     '<div class="viewport-toolbar pull-right">',
                         '<div class="btn-group">',
                             '<button data-toggle="dropdown" class="btn dropdown-toggle">Buffers <span class="caret"></span></button>',
-                            '<ul id="open-buffers" class="dropdown-menu">',
+                            '<ul class="dropdown-menu open-buffers-list">',
                                 '<li><a href="#">Save all</a></li>',
                                 '<li><a href="#">Save and close all</a></li>',
                                 '<li class="divider"></li>',
@@ -77,7 +87,7 @@
                 viewport: viewport,
                 editor: editor
             };
-
+            this.updateBufferLists();
             return this.viewports[filename];
         };
 
@@ -88,6 +98,12 @@
 
         this.getViewport = function(filename) {
             return this.viewports[filename];
+        };
+
+        this.closeViewport = function(filename) {
+            this.viewports[filename].viewport.remove();
+            delete this.viewports[filename];
+            this.updateBufferLists();
         };
 
         this.getVersionChoice = function(choices){
