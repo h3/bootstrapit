@@ -20,7 +20,5 @@ Inspired by http://css3please.com/
   margin: 0;
   padding: 0; }
 
-#overview {
-  margin-top: 60px; }
-  #overview h1 a {
-    color: #111; }
+#overview h1 a {
+  color: #111; }
