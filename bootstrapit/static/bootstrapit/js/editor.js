@@ -52,7 +52,7 @@
                                 '<li><a href="#">Save and close all</a></li>',
                                 '<li class="divider"></li>',
                                 '<li><a href="#variables.less">variables.less</a></li>',
-                                '<li><a href="#layout.less">layout.less</a></li>',
+                                '<li><a href="#layouts.less">layouts.less</a></li>',
                             '</ul>',
                             '<button class="btn viewport-save" data-loading-text="Saving...">Save</button>',
                             '<button class="btn viewport-close">Close</button>',
@@ -96,8 +96,12 @@
                     filename: filename,
                     content: vp.editor.getValue(),
                     csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val()
-                }, function(){
+                }, function(json){
+                    console.log(json);
+                    if (json['status'] != 'ok'){
+                    }else{
                     console.log('Saved..');
+                    }
                 });
         };
 
