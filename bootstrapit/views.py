@@ -45,8 +45,12 @@ class EditorBackend(ProcessFormView, JSONResponseMixin):
         filename = request.POST.get('filename')
         if not (content and filename):
             return self.render_to_response({'status': 'fail',
-                                            'message' :'content or filname not found'
-                                           })
+                                            'message' :'content or filname not found'}) 
+        #get bootstrap version
+        #get LessBaseFile associate
+        #get theme
+        #get last upload of this file vertion
+        #creat an save LessVertionFile
         return self.render_to_response({'test': 'test1'})
 
 

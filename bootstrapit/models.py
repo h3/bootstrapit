@@ -55,7 +55,7 @@ class Theme(models.Model):
 
 class LessVertionFile(models.Model):
     file = models.ForeignKey(LessBaseFile)
-    parent = models.ForeignKey("self")
+    parent = models.ForeignKey("self",null=True,blank = True)
     project = models.ForeignKey(Theme)
     last_access = models.DateTimeField(_('last access'))
 
