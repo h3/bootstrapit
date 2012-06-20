@@ -68,7 +68,7 @@ class EditorBackend(ProcessFormView, JSONResponseMixin):
         if not th:
             return self.render_to_response({'status': 'theme',
                     'message' :'Bootstrap Theme not found',
-                    'choices' : [{'pk' :u.pk,'created': u.created} for u in Theme.objects.filter(owner=request.user)]})
+                    'choices' : [{'pk' :u.pk,'name': u.created} for u in Theme.objects.filter(owner=request.user)]})
 
         try:
             th = Theme.objects.get(pk=th, owner = request.user)
