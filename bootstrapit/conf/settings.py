@@ -1,7 +1,7 @@
 BOOTSTRAPIT_BOOTSTRAP_NAV = {}
 
 
-BOOTSTRAPIT_BOOTSTRAP_NAV['2.1'] = [
+BOOTSTRAPIT_BOOTSTRAP_NAV['2.0.4'] = [
     {'label': u'General',
      'items': [
          {'type': 'file', 'src': 'variables.less',   'label': u'Variables'},
@@ -67,3 +67,4 @@ BOOTSTRAPIT_BOOTSTRAP_NAV['2.1'] = [
      ],
     },
 ]
+BOOTSTRAPIT_BOOTSTRAP_NAV['2.0.5'] = BOOTSTRAPIT_BOOTSTRAP_NAV['2.0.4']

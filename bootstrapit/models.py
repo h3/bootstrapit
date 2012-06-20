@@ -34,7 +34,8 @@ class BootstrapVersion(models.Model):
         ordering = ('version',)
     
     def get_absolute_url(self):
-        return reverse('bootstrapversion-home',args=(self.slug))
+        return "/"
+        #return reverse('bootstrapversion-home',args=(self.slug))
 
 
 class LessBaseFile(models.Model):
