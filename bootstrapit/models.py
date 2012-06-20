@@ -30,6 +30,8 @@ class BootstrapVersion(models.Model):
         return FileVarToJson(
                 os.path.join(settings.MEDIA_ROOT,self.store,'less/variables.less')
                 )
+    class Meta:
+        ordering = ('version',)
     
     def get_absolute_url(self):
         return reverse('bootstrapversion-home',args=(self.slug))
@@ -51,16 +53,16 @@ class LessBaseFile(models.Model):
     def __unicode__(self):
         return "%s (%s)" % (self.name,self.BVersion)
 
-class Style(models.Model):
+class Theme(models.Model):
     created = models.DateTimeField(_('created'))
     owner = models.ForeignKey(User)
 
 
 class LessVertionFile(models.Model):
     file = models.ForeignKey(LessBaseFile)
-    parent = models.ForeignKey("self")
-    project = models.ForeignKey(Style)
-    last_access = models.DateTimeField(_('last access'))
+    parent = models.ForeignKey("self",null=True,blank = True)
+    project = models.ForeignKey(Theme)
+    last_access = models.DateTimeField(_('last access'),auto_now = True,editable=False)
 
     
 
