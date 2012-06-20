@@ -53,28 +53,37 @@ class EditorBackend(ProcessFormView, JSONResponseMixin):
         v  = request.session.get('version')
         if not v:
             return self.render_to_response({'status': 'BV',
-                    'message' :'Bootstrap Version not found'})
+                    'message' :'Bootstrap Version not found',
+                    'choices' : [{'pk': u.pk,'name' : u.version} for u in BootstrapVersion.objects.all()]})
 
         try:
             v = BootstrapVersion.objects.get(slug=v)
         except:
             return self.render_to_response({'status': 'BV-404',
-                    'message' :'Bootstrap Version not found'})
+                    'message' :'Bootstrap Version not found',
+                    'choices' : [{'pk': u.pk,'name' : u.version} for u in BootstrapVersion.objects.all()]})
         
         #get theme
         th = request.session.get('theme')
         if not th:
             return self.render_to_response({'status': 'theme',
-                    'message' :'Bootstrap Theme not found'})
+                    'message' :'Bootstrap Theme not found',
+                    'choices' : [{'pk' :u.pk,'created': u.created} for u in Theme.objects.filter(owner=request.user)]})
 
         try:
             th = Theme.objects.get(pk=th, owner = request.user)
         except:
             return self.render_to_response({'status': 'theme-404',
-                    'message' :'Bootstrap Theme not found'})
+                    'message' :'Bootstrap Theme not found',
+                    'choices' : [{'pk' :u.pk,'created': u.created} for u in Theme.objects.filter(owner=request.user)]})
 
         #get LessBaseFile associate
-        lessBase = get_object_or_404(LessBaseFile,name = filname,BVersion = v)
+        lessBase = LessBaseFile.objects.filter(name = filname,BVersion = v)[:1]
+        if not lessBase:
+            return self.render_to_response({'status': 'file',
+                    'message' :'No less file find with this name',
+                    'choices' : [{'pk' : u.pk, 'name' : u.name } for u in LessBaseFile.objects.filter(BVersion=v)]})
+
         #get last upload of this file vertion
         last = LessVertionFile.objects.filter(project = th, file = lessBase).order_by('+last_access')[:1]
 

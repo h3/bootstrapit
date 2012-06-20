@@ -27,6 +27,8 @@ class BootstrapVersion(models.Model):
         return FileVarToJson(
                 os.path.join(settings.MEDIA_ROOT,self.store,'less/variables.less')
                 )
+    class Meta:
+        ordering = ('version',)
     
     def get_absolute_url(self):
         return reverse('bootstrapversion-home',args=(self.slug))
