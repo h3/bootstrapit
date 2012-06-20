@@ -1,0 +1,17 @@
+{% load bootstrapit_tags %}
+{% for menu in bootstrap_nav %}
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ menu.label }} <b class="caret"></b></a>
+    <ul class="dropdown-menu">
+        {% for item in menu.items %}
+        {% if item.type == "file" %}
+        <li><a class="bootstrapit-file" href="#{{ item.src }}">{{ item.label }}</a></li>
+        {% elif item.type == "divider" %}
+        <li class="divider"></li>
+        {% elif item.type == "header" %}
+        <li class="nav-header">{{ item.label }}</li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+</li>
+{% endfor %}

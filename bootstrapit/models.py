@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 
-from django.db import models
-from bootstrapit.parser.parser import FileVarToJson
 import os
+
 from django.conf import settings
-from django.core.urlresolvers import reverse
-from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
+from django.db import models
+from django.utils.translation import ugettext_lazy as _
+
+from bootstrapit.parser.parser import FileVarToJson
+
 
 class BootstrapVersion(models.Model):
     version = models.CharField(_('version'),max_length=255,unique=True)
