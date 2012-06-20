@@ -17,6 +17,17 @@
         $('.viewport:first').show();
     });
 
+    $('.bootstrapit-file').live('click', function(e){
+        var a = $(this),
+            filename = a.attr('href').replace('#', '');
+        if (typeof($.bootstrapit.viewports[filename]) != 'undefined') {
+            $.bootstrapit.showViewport(filename);
+        }
+        else {
+            $.bootstrapit.createViewport(filename, a.text());
+        }
+    });
+
     $('.cm-number')
         .live('mouseover', function() {
             $(this).addClass('hover');
@@ -41,10 +52,10 @@
         };
 
         this.updateBufferLists = function() {
-            $('.open-buffers-list .bootstrapit-file').remove();
-            $.each(this.viewports, function(i, vp){
-                $('<li><a href="#', vp.filename, '">', vp.filename, '</a></li>')
-                    .appendTo(vp.viewport.find('.open-buffers-list'));
+            $('.open-buffers-list .bootstrapit-file').parent().remove();
+            $.each(this.viewports, function(filename, vp){
+                $('<li><a href="#'+ filename +'" class="bootstrapit-file">'+ filename +'</a></li>')
+                    .appendTo('.open-buffers-list');
             });
         },
 
@@ -61,8 +72,6 @@
                                 '<li><a href="#">Save all</a></li>',
                                 '<li><a href="#">Save and close all</a></li>',
                                 '<li class="divider"></li>',
-                                '<li><a href="#variables.less">variables.less</a></li>',
-                                '<li><a href="#layouts.less">layouts.less</a></li>',
                             '</ul>',
                             '<button class="btn viewport-save" data-loading-text="Saving...">Save</button>',
                             '<button class="btn viewport-close">Close</button>',
@@ -93,7 +102,7 @@
 
         this.showViewport = function(filename) {
             $('.viewport').hide();
-            return this.viewports[filename].viewport.show();
+            return $.bootstrapit.getViewport(filename).viewport.show();
         };
 
         this.getViewport = function(filename) {
@@ -164,19 +173,5 @@
 
         return this;
     })();
-
-    $(function(){
-        $('.bootstrapit-file').bind('click.bootstrapit', function(e){
-            var a = $(this),
-                filename = a.attr('href').replace('#', '');
-            if (a.data('editor-viewport')) {
-                $.bootstrapit.showViewport(filename);
-            }
-            else {
-                a.data('editor-viewport', 
-                    $.bootstrapit.createViewport(filename, a.text()));
-            }
-        });
-    });
 })(jQuery);
 
