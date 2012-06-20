@@ -21,11 +21,11 @@
         <script>
         var w;
         $(function(){
-            w = open("/editor")
+            //w = open("/editor")
         });
         </script>
     </head>
-    <body>
+    <body data-spy="scroll" data-target=".subnav" data-offset="50">
         {% block content %}{% endblock %}
     </body>
 </html>
