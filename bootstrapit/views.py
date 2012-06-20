@@ -41,6 +41,12 @@ class JSONResponseMixin(object):
 
 class EditorBackend(ProcessFormView, JSONResponseMixin):
     def post(self, request, *args, **kwargs):
+        content = request.POST.get('content')
+        filename = request.POST.get('filename')
+        if not (content and filename):
+            return self.render_to_response({'status': 'fail',
+                                            'message' :'content or filname not found'
+                                           })
         return self.render_to_response({'test': 'test1'})
 
 

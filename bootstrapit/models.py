@@ -48,7 +48,7 @@ class LessBaseFile(models.Model):
     def __unicode__(self):
         return "%s (%s)" % (self.name,self.BVersion)
 
-class Style(models.Model):
+class Theme(models.Model):
     created = models.DateTimeField(_('created'))
     owner = models.ForeignKey(User)
 
@@ -56,7 +56,7 @@ class Style(models.Model):
 class LessVertionFile(models.Model):
     file = models.ForeignKey(LessBaseFile)
     parent = models.ForeignKey("self")
-    project = models.ForeignKey(Style)
+    project = models.ForeignKey(Theme)
     last_access = models.DateTimeField(_('last access'))
 
     
