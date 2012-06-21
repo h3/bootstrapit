@@ -7,6 +7,8 @@ urlpatterns=patterns('',
     
     url(r'^$', DesignView.as_view(), name='bootstrapit-index'),
 
+    url(r'^(?P<theme>[\d\w-]+)$', DesignEditView.as_view(), name='bootstrapit-edit'),
+
     url(r'^edit/(?P<theme>[\d\w-]+)$', 
         login_required(EditorView.as_view()), name='bootstrapit-editor'),
 

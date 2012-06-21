@@ -16,18 +16,32 @@
               <li><a href="#javascript">Javascript plugins</a></li>
               <li><a href="#less">Using LESS</a></li>
             </ul>
+            {% if theme_list %}
             <ul class="nav pull-right">
                 <li class="divider-vertical"></li>
                 <li class="dropdown">
-                <a data-toggle="dropdown" class="dropdown-toggle" href="#">Theme <b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                    <li><a data-toggle="modal" href="#modal-new-project">Create new</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">Mysite.com</a></li>
-                    <li><a href="#">Myothersite.com</a></li>
-                </ul>
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">Themes <b class="caret"></b></a>
+                    <ul class="dropdown-menu theme-list">
+                        <li><a data-toggle="modal" href="#modal-new-project">Create new</a></li>
+                        <li class="divider"></li>
+                        {% for theme in theme_list %}
+                        <li><a href="{{ theme.slug }}">{{ theme }}</a></li>
+                        {% endfor %}
+                    </ul>
                 </li>
             </ul>
+            {% else %}
+            <ul class="nav pull-right">
+                <li class="divider-vertical"></li>
+                <li class="dropdown">
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">{{ theme }}<b class="caret"></b></a>
+                    <ul class="dropdown-menu theme-list">
+                        <li><a href="#">Download theme</a></li>
+                        <li><a href="/">Close</a></li>
+                    </ul>
+                </li>
+            </ul>
+            {% endif %}
           </div>
         </div>
       </div>

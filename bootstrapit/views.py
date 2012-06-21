@@ -77,10 +77,19 @@ class EditorBackend(ProcessFormView, JSONResponseMixin):
 
 class DesignView(TemplateView):
     template_name = 'bootstrapit/design.html'
-#   def get_context_data(self, **kwargs):
-#       context = super(DesignView, self).get_context_data(**kwargs)
-#       context['object_list'] = 
-#       return context
+
+    def get_context_data(self, **kwargs):
+        context = super(DesignView, self).get_context_data(**kwargs)
+        context['theme_list'] = Theme.objects.filter(owner=self.request.user)
+        return context
+
+class DesignEditView(TemplateView):
+    template_name = 'bootstrapit/design.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(DesignEditView, self).get_context_data(**kwargs)
+        context['theme'] = Theme.objects.get(slug=self.kwargs.get('theme'))
+        return context
 
 
 class HomeView(TemplateView):
