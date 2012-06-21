@@ -12,16 +12,16 @@
         <link href="{{ MEDIA_URL }}bootstrap/2.0.4/docs/assets/css/docs.css" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="{{ STATIC_URL }}bootstrapit/css/site.css">
         <link rel="stylesheet" href="{{ STATIC_URL }}bootstrapit/css/docs.css">
-        <script>
-        var w;
-        $(function(){
-            //w = open("/editor")
-        });
-        </script>
     </head>
     <body>
         {% block content %}{% endblock %}
     </body>
     <script src="{{ MEDIA_URL }}bootstrap/2.0.4/docs/assets/js/jquery.js"></script>
     <script src="{{ MEDIA_URL }}bootstrap/2.0.4/docs/assets/js/bootstrap.js"></script>
+    <script>
+    var w;
+    $(function(){
+        //w = open("/editor")
+    });
+    </script>
 </html>

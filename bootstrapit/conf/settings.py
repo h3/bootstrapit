@@ -1,3 +1,23 @@
+"""
+ Instead of using a model to store different bootstrap versions we will use
+ a configuration since we already need to setup file mapping by hand for each versions.
+
+ Workflow
+ --------
+
+ - Edit the `BOOTSTRAPIT_BOOTSTRAP_VERSIONS` settings to add/modify bootstrap versions
+ - Edit the `BOOTSTRAPIT_BOOTSTRAP_NAV` to specify the file mapping for each bootstrap versions
+ - Run this management command to download and cache all bootstrap versions:
+   $ django bootstrapit_sync
+ - Bootstrapit will go through each specified bootstrap versions and download them if they aren't already present
+
+"""
+
+BOOTSTRAPIT_BOOTSTRAP_VERSIONS = {
+    '2.0.4': 'https://github.com/twitter/bootstrap/tarball/v2.0.4',        
+    'dev': 'git://github.com/twitter/bootstrap.git',        
+}
+
 BOOTSTRAPIT_BOOTSTRAP_NAV = {}
 
 
@@ -67,4 +87,4 @@ BOOTSTRAPIT_BOOTSTRAP_NAV['2.0.4'] = [
      ],
     },
 ]
-BOOTSTRAPIT_BOOTSTRAP_NAV['2.0.5'] = BOOTSTRAPIT_BOOTSTRAP_NAV['2.0.4']
+BOOTSTRAPIT_BOOTSTRAP_NAV['dev'] = BOOTSTRAPIT_BOOTSTRAP_NAV['2.0.4']

@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import json  
 from datetime import datetime
 
 from django import http  
@@ -8,8 +7,6 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, TemplateView, DetailView, View
-from django.views.generic import ListView, TemplateView, DetailView, View
-from django.views.generic.edit import ProcessFormView
 from django.views.generic.edit import ProcessFormView
 
 from bootstrapit.models import *
