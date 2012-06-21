@@ -10,7 +10,36 @@ from django.utils.translation import ugettext_lazy as _
 
 from bootstrapit.parser.parser import FileVarToJson
 
+from bootstrapit.conf import settings
 
+VERSIONS = [(k, v) for k, v in settings.BOOTSTRAPIT_BOOTSTRAP_VERSIONS]
+
+
+class Theme(models.Model):
+    """
+    This model holds saved custom themes
+    """
+    name = models.CharField(_('name'), max_length=255)
+    slug = models.SlugField(_('slug'), max_length=255)
+    owner = models.ForeignKey(User, related_name="owner")
+    contributors = models.ManyToManyField(User, related_name="contributors", blank=True, null=True)
+    bootstrap_version = models.CharField(_('version'), 
+                            max_length=20, choices=VERSIONS)
+
+    date_created  = models.DateTimeField(_('created'), auto_now_add=True)
+    date_modified = models.DateTimeField(_('created'), auto_now=True)
+    rendered_css = models.TextField(_('rendered CSS'), blank=True, null=True)
+
+
+class ThemeFile(models.Model):
+    theme = models.ForeignKey(Theme)
+    name = models.CharField(_('filename'), max_length=255)
+    content = models.TextField(_('content'))
+    date_modified = models.DateTimeField(_('created'), auto_now=True)
+
+
+    
+# TODO: remove (deprecated)
 class BootstrapVersion(models.Model):
     version = models.CharField(_('version'),max_length=255,unique=True)
     slug = models.SlugField(_('slug'),max_length=255)
@@ -54,16 +83,9 @@ class LessBaseFile(models.Model):
     def __unicode__(self):
         return "%s (%s)" % (self.name,self.BVersion)
 
-class Theme(models.Model):
-    created = models.DateTimeField(_('created'))
-    owner = models.ForeignKey(User)
-
 
 class LessVertionFile(models.Model):
     file = models.ForeignKey(LessBaseFile)
     parent = models.ForeignKey("self",null=True,blank = True)
     project = models.ForeignKey(Theme)
     last_access = models.DateTimeField(_('last access'),auto_now = True,editable=False)
-
-    
-
