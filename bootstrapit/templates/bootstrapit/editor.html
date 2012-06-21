@@ -35,14 +35,12 @@
                                 <ul class="nav pull-right">
                                     <li class="divider-vertical"></li>
                                     <li class="dropdown">
-                                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">Untitled 1<b class="caret"></b></a>
+                                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                            <b style="color:white;">{{ theme }}</b> <b class="caret"></b>
+                                        </a>
                                         <ul class="dropdown-menu">
-                                            <li><a href="#">Save</a></li>
-                                            <li><a href="#">Reset</a></li>
-                                            <li class="divider"></li>
-                                            <li class="nav-header">Saved themes</li>
-                                            <li><a href="#">mysite.com</a></li>
-                                            <li><a href="#">someothersite.com</a></li>
+                                            <li><a href="#">Clone</a></li>
+                                            <li><a href="#">Revisions</a></li>
                                         </ul>
                                     </li>
                                 </ul>
@@ -51,7 +49,8 @@
                     </div>
                 </div>
             </div>
-            <div id="bootstrapit-editor"></div>
+            <div id="bootstrapit-editor"
+                 data-default-file="{{ default_file }}"></div>
         </div>
     </body>
 </html>

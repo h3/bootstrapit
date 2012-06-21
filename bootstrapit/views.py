@@ -14,14 +14,28 @@ from bootstrapit.conf import settings
 from bootstrapit.utils import JSONResponseMixin
 
 
-
-
 class EditorView(TemplateView):
+    """
+    Serves the editor interface (initial load)
+    """
     template_name = 'bootstrapit/editor.html'
 
     def get_context_data(self, **kwargs):
         context = super(EditorView, self).get_context_data(**kwargs)
-        context['bootstrap_nav'] = settings.BOOTSTRAPIT_BOOTSTRAP_NAV['2.0.4']
+        try:
+            self.theme = Theme.objects.get(slug=kwargs.get('theme'), 
+                            owner_id=self.request.user.pk)
+        except Theme.DoesNotExist:
+            raise http.Http404
+
+        context['theme'] = self.theme
+        context['bootstrap_nav'] = \
+                settings.BOOTSTRAPIT_BOOTSTRAP_NAV[\
+                self.theme.bootstrap_version]
+
+        context['default_file'] = \
+                settings.BOOTSTRAPIT_EDITOR_DEFAULT_FILE
+
         return context
 
 
@@ -37,64 +51,28 @@ class EditorBackend(ProcessFormView, JSONResponseMixin):
         if not (content and filename):
             return self.render_to_response({'status':  'error',
                                             'message': 'Missing arguments'})
-        #get bootstrap version
-        v  = request.session.get('version')
-
         try:
             theme = Theme.objects.get(pk=theme_id, owner=request.user) # TODO: OR CONTRIBUOR
         except Theme.DoesNotExist:
             return self.render_to_response({'status':  'error',
                                             'message': 'Theme not found'})
 
-
-        if not v:
-            return self.render_to_response({'status': 'BV',
-                    'message' :'Bootstrap Version not found',
-                    'choices' : [{'pk': u.pk,'name' : u.version} for u in BootstrapVersion.objects.all()]})
+        version = theme.bootstrap_version
 
         try:
-            v = BootstrapVersion.objects.get(slug=v)
+            repos = settings.BOOTSTRAPIT_BOOTSTRAP_VERSIONS[version]
         except:
-            return self.render_to_response({'status': 'BV-404',
-                    'message' :'Bootstrap Version not found',
-                    'choices' : [{'pk': u.pk,'name' : u.version} for u in BootstrapVersion.objects.all()]})
+            return self.render_to_response({'status': 'error',
+                    'message' :'Bootstrap version not found',
+                    'choices' : settings.BOOTSTRAPIT_BOOTSTRAP_VERSIONS.items()})
         
-        #get theme
-        th = request.session.get('theme')
-        if not th:
-            return self.render_to_response({'status': 'theme',
-                    'message' :'Theme not found',
-                    'choices' : [{'pk' :u.pk,'name': u.created} for u in Theme.objects.filter(owner=request.user)]})
+        less, created = theme.themefile_set.get_or_create(name=filname)
 
-        try:
-            th = Theme.objects.get(pk=th, owner = request.user)
-        except:
-            return self.render_to_response({'status': 'theme-404',
-                    'message' :'Theme not found',
-                    'choices' : [{'pk' :u.pk,'created': u.created} for u in Theme.objects.filter(owner=request.user)]})
-
-        #get LessBaseFile associate
-        lessBase = LessBaseFile.objects.filter(name = filname,BVersion = v)[:1]
-        if not lessBase:
-            return self.render_to_response({'status': 'file',
-                    'message' :'No less file find with this name',
-                    'choices' : [{'pk' : u.pk, 'name' : u.name } for u in LessBaseFile.objects.filter(BVersion=v)]})
-
-        #get last upload of this file vertion
-        last = LessVertionFile.objects.filter(project = th, file = lessBase).order_by('+last_access')[:1]
-
-        if last:
-            last = last[0]
-        else:
-            last = None
-        
-        #creat an save LessVertionFile
-        LessVertionFile.objects.create(file = lessBase,
-                                       parent = last,
-                                       project = th)
-
-        return self.render_to_response({'status': 'ok',
-                                        'message' : 'file save'})
+        if created: msg = 'file created'
+        else:       out = 'file saved'
+            
+        return self.render_to_response({
+                'status': 'success', 'message': msg})
 
 
 class DesignView(TemplateView):

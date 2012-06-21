@@ -1,5 +1,11 @@
 (function($){
 
+    $(function(){
+        var file = $('#bootstrapit-editor').data('default-file');
+        console.log(file);
+        $.bootstrapit.createViewport(file.src, file.label);
+    });
+
     $(window).bind('resize.bootstrapit', function(e) {
         var h = $(window).height() - 110;
         $('.CodeMirror').height(h)
@@ -137,20 +143,21 @@
                     content: vp.editor.getValue(),
                     csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val()
                 }, function(json){
-                    console.log(json);
-                    if (json['status'] != 'ok'){
-                        if (json['status'] == 'BV' || json['status'] == 'BV-404'){
-                            getVersionChoice(json['choices']);
-                        }else if (json['status'] == 'theme' || json['status'] == 'theme-404'){
-                            getThemeChoice(json['choices']);
-                        }else if(json['status'] == 'file'){
-                            getLessFileChoice(json['choices']);
-                        }else{
-                            console.log('erreur inconnue');
-                        }
-                    }else{
-                    console.log('Saved..');
+                    if (json['status'] == 'success'){
+                        console.log('OK: ', json['message'])
                     }
+                    else {
+                        console.log('ERROR: ', json['message'])
+                    }
+                    //  if (json['status'] == 'BV' || json['status'] == 'BV-404'){
+                    //      getVersionChoice(json['choices']);
+                    //  }else if (json['status'] == 'theme' || json['status'] == 'theme-404'){
+                    //      getThemeChoice(json['choices']);
+                    //  }else if(json['status'] == 'file'){
+                    //      getLessFileChoice(json['choices']);
+                    //  }else{
+                    //      console.log('erreur inconnue');
+                    //  }
                 });
         };
 

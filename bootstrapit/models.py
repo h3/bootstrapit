@@ -12,7 +12,7 @@ from bootstrapit.parser.parser import FileVarToJson
 
 from bootstrapit.conf import settings
 
-VERSIONS = [(k, v) for k, v in settings.BOOTSTRAPIT_BOOTSTRAP_VERSIONS]
+VERSIONS = settings.BOOTSTRAPIT_BOOTSTRAP_VERSIONS.items()
 
 
 class Theme(models.Model):
@@ -30,12 +30,18 @@ class Theme(models.Model):
     date_modified = models.DateTimeField(_('created'), auto_now=True)
     rendered_css = models.TextField(_('rendered CSS'), blank=True, null=True)
 
+    def __unicode__(self):
+        return u'%s (%s)' % (self.name, self.bootstrap_version)
+
 
 class ThemeFile(models.Model):
     theme = models.ForeignKey(Theme)
     name = models.CharField(_('filename'), max_length=255)
     content = models.TextField(_('content'))
     date_modified = models.DateTimeField(_('created'), auto_now=True)
+
+    def __unicode__(self):
+        return u'%s' % self.name
 
 
     
