@@ -29,14 +29,27 @@ class EditorView(TemplateView):
 
 
 class EditorBackend(ProcessFormView, JSONResponseMixin):
+    """
+    Handles editor's backend commands
+    """
     def post(self, request, *args, **kwargs):
-        content = request.POST.get('content')
+        theme_id = request.POST.get('theme')
         filename = request.POST.get('filename')
+        content  = request.POST.get('content')
+
         if not (content and filename):
-            return self.render_to_response({'status': 'fail',
-                                            'message' :'content or filname not found'})
+            return self.render_to_response({'status':  'error',
+                                            'message': 'Missing arguments'})
         #get bootstrap version
         v  = request.session.get('version')
+
+        try:
+            theme = Theme.objects.get(pk=theme_id, owner=request.user) # TODO: OR CONTRIBUOR
+        except Theme.DoesNotExist:
+            return self.render_to_response({'status':  'error',
+                                            'message': 'Theme not found'})
+
+
         if not v:
             return self.render_to_response({'status': 'BV',
                     'message' :'Bootstrap Version not found',
@@ -53,14 +66,14 @@ class EditorBackend(ProcessFormView, JSONResponseMixin):
         th = request.session.get('theme')
         if not th:
             return self.render_to_response({'status': 'theme',
-                    'message' :'Bootstrap Theme not found',
+                    'message' :'Theme not found',
                     'choices' : [{'pk' :u.pk,'name': u.created} for u in Theme.objects.filter(owner=request.user)]})
 
         try:
             th = Theme.objects.get(pk=th, owner = request.user)
         except:
             return self.render_to_response({'status': 'theme-404',
-                    'message' :'Bootstrap Theme not found',
+                    'message' :'Theme not found',
                     'choices' : [{'pk' :u.pk,'created': u.created} for u in Theme.objects.filter(owner=request.user)]})
 
         #get LessBaseFile associate
