@@ -1,9 +1,9 @@
 (function($){
 
     $(function(){
-        var file = $('#bootstrapit-editor').data('default-file');
-        console.log(file);
-        $.bootstrapit.createViewport(file.src, file.label);
+        var src   = $('#bootstrapit-editor').data('default-file-src'),
+            label = $('#bootstrapit-editor').data('default-file-label')
+        $.bootstrapit.createViewport(src, label);
     });
 
     $(window)

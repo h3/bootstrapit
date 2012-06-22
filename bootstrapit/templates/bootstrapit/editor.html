@@ -40,6 +40,7 @@
                                         </a>
                                         <ul class="dropdown-menu">
                                             <li><a href="#">Clone</a></li>
+                                            <li><a href="#">Contributors</a></li>
                                             <li><a href="#">Revisions</a></li>
                                         </ul>
                                     </li>
@@ -49,8 +50,10 @@
                     </div>
                 </div>
             </div>
-            <div id="bootstrapit-editor"
-                 data-default-file="{{ default_file }}"></div>
+            <div id="bootstrapit-editor" 
+                 data-default-file-src="{{ default_file.src }}"
+                 data-default-file-label="{{ default_file.label }}"
+                 data-default-file-type="{{ default_file.type }}"></div>
         </div>
     </body>
 </html>

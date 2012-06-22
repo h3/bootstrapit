@@ -35,6 +35,7 @@ class EditorView(TemplateView):
 
         context['default_file'] = \
                 settings.BOOTSTRAPIT_EDITOR_DEFAULT_FILE
+                
 
         return context
 
