@@ -89,4 +89,4 @@ BOOTSTRAPIT_BOOTSTRAP_NAV['2.0.4'] = [
 ]
 BOOTSTRAPIT_BOOTSTRAP_NAV['dev'] = BOOTSTRAPIT_BOOTSTRAP_NAV['2.0.4']
 
-BOOTSTRAPIT_EDITOR_DEFAULT_FILE = {'type': 'file', 'src': 'variables.less',   'label': u'Variables'}
+BOOTSTRAPIT_EDITOR_DEFAULT_FILE = {'type': 'file', 'src': 'variables.less', 'label': u'Variables'}

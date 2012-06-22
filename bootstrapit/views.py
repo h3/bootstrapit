@@ -45,7 +45,7 @@ class EditorBackend(ProcessFormView, JSONResponseMixin):
     Handles editor's backend commands
     """
     def post(self, request, *args, **kwargs):
-        theme_id = request.POST.get('theme')
+        theme_id = request.POST.get('theme_id')
         filename = request.POST.get('filename')
         content  = request.POST.get('content')
 
@@ -67,11 +67,12 @@ class EditorBackend(ProcessFormView, JSONResponseMixin):
                     'message' :'Bootstrap version not found',
                     'choices' : settings.BOOTSTRAPIT_BOOTSTRAP_VERSIONS.items()})
         
-        less, created = theme.themefile_set.get_or_create(name=filname)
+        less, created = theme.themefile_set.get_or_create(name=filename)
+        msg = created and 'file created' or 'file saved'
 
-        if created: msg = 'file created'
-        else:       out = 'file saved'
-            
+        less.content = content
+        less.save()
+
         return self.render_to_response({
                 'status': 'success', 'message': msg})
 

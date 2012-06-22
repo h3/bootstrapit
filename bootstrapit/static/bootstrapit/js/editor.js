@@ -80,14 +80,14 @@
                 '<div class="viewport" data-file="', filename,'">',
                     '<div class="viewport-toolbar pull-right">',
                         '<div class="btn-group">',
-                            '<button data-toggle="dropdown" class="btn dropdown-toggle">Buffers <span class="caret"></span></button>',
+                            '<button class="btn btn-primary viewport-save" data-loading-text="Saving...">Save</button>',
+                            '<button class="btn btn-inverse viewport-close">Close</button>',
+                            '<button data-toggle="dropdown" class="btn btn-inverse dropdown-toggle">Buffers <span class="caret"></span></button>',
                             '<ul class="dropdown-menu open-buffers-list">',
                                 '<li><a href="#">Save all</a></li>',
                                 '<li><a href="#">Save and close all</a></li>',
                                 '<li class="divider"></li>',
                             '</ul>',
-                            '<button class="btn viewport-save" data-loading-text="Saving...">Save</button>',
-                            '<button class="btn viewport-close">Close</button>',
                         '</div>',
                     '</div>',
                     '<h1>',
@@ -147,6 +147,7 @@
             var vp = $.bootstrapit.getViewport(filename);
             $.post('/api/editor/', {
                     filename: filename,
+                    theme_id: $('#bootstrapit-editor').data('theme-id'),
                     content: vp.editor.getValue(),
                     csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val()
                 }, function(json){
