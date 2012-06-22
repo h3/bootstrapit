@@ -18,9 +18,18 @@
     <script src="{{ MEDIA_URL }}bootstrap/2.0.4/docs/assets/js/jquery.js"></script>
     <script src="{{ MEDIA_URL }}bootstrap/2.0.4/docs/assets/js/bootstrap.js"></script>
     <script>
-    var w;
+    {% if theme %}
+    function onEditorClose() {
+        $('#bootstrapit-open-editor-btn').show();
+    };
+    function onEditorLoad() {
+        $('#bootstrapit-open-editor-btn').hide();
+    };
     $(function(){
-        //w = open("/editor")
+        $('#bootstrapit-open-editor-btn').bind('click.bootstrapit', function() {
+            ew = open("/edit/{{ theme.slug }}");
+        });
     });
+    {% endif %}
     </script>
 </html>

@@ -6,11 +6,18 @@
         $.bootstrapit.createViewport(file.src, file.label);
     });
 
-    $(window).bind('resize.bootstrapit', function(e) {
-        var h = $(window).height() - 110;
-        $('.CodeMirror').height(h)
-            .find('.CodeMirror-scroll').height(h); // Weird ..
-    });
+    $(window)
+        .ready(function(){
+            window.opener.onEditorLoad();
+        })
+        .bind('beforeunload.bootstrapit', function(e) {
+            window.opener.onEditorClose();
+        })
+        .bind('resize.bootstrapit', function(e) {
+            var h = $(window).height() - 110;
+            $('.CodeMirror').height(h)
+                .find('.CodeMirror-scroll').height(h); // Weird ..
+        });
 
     $('.viewport-save').live('click.bootstrapit', function(){
         var vp = $(this).parents('.viewport').data('file');

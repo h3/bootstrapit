@@ -33,12 +33,15 @@
             {% else %}
             <ul class="nav pull-right">
                 <li class="divider-vertical"></li>
-                <li class="dropdown">
+                <li id="bootstrapit-theme-menu" class="dropdown">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">{{ theme }}<b class="caret"></b></a>
                     <ul class="dropdown-menu theme-list">
                         <li><a href="#">Download theme</a></li>
                         <li><a href="/">Close</a></li>
                     </ul>
+                </li>
+                <li id="bootstrapit-open-editor-btn">
+                    <button class="btn btn-small btn-inverse" data-editor-url="/edit/{{ theme.slug }}">Open editor</button>
                 </li>
             </ul>
             {% endif %}
