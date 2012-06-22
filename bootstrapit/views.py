@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime
+import reversion
 
 from django import http  
 from django.contrib.auth.decorators import login_required
@@ -71,7 +72,11 @@ class EditorBackend(ProcessFormView, JSONResponseMixin):
         msg = created and 'file created' or 'file saved'
 
         less.content = content
-        less.save()
+        print dir(less)
+        with reversion.create_revision():
+            less.save()
+            reversion.set_user(self.request.user)
+            reversion.set_comment("Changed content")
 
         return self.render_to_response({
                 'status': 'success', 'message': msg})
