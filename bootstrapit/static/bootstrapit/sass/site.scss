@@ -7,6 +7,19 @@ body {
 #bootstrapit-open-editor-btn {
 }
 
+.navbar-fixed-top {
+    .brand {
+        float: left;
+        color: #666;
+        margin-left: 0;
+        margin-right: 20px;
+        em {
+            color: #bbb;
+            font-weight: normal;
+        }
+    }
+}
+
 #overview {
     h1 {
         a {

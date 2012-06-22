@@ -23,5 +23,14 @@ Inspired by http://css3please.com/
 body {
   padding-top: 20px; }
 
+.navbar-fixed-top .brand {
+  float: left;
+  color: #666;
+  margin-left: 0;
+  margin-right: 20px; }
+  .navbar-fixed-top .brand em {
+    color: #bbb;
+    font-weight: normal; }
+
 #overview h1 a {
   color: #111; }
