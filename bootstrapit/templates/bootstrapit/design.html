@@ -1,5 +1,15 @@
 {% extends "bootstrapit/base.html" %}
 
+{% block bootstrapit.css %}
+{% if not theme_list %}
+<link href="{% url "bootstrapit-file-backend" theme.slug theme.version "less/bootstrap.less" %}" rel="stylesheet/less" type="text/css">
+<link href="{% url "bootstrapit-file-backend" theme.slug theme.version "less/responsive.less" %}" rel="stylesheet/less" type="text/css">
+<link href="{% url "bootstrapit-file-backend" theme.slug theme.version "docs/assets/css/docs.css" %}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="{{ STATIC_URL }}bootstrapit/css/site.css">
+{% endif %}
+{% endblock %}
+
+
 {% block content %}
 
   <!-- Navbar
@@ -36,7 +46,9 @@
                 <li id="bootstrapit-theme-menu" class="dropdown">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">{{ theme }}<b class="caret"></b></a>
                     <ul class="dropdown-menu theme-list">
+                        <li><a href="#">Clone theme</a></li>
                         <li><a href="#">Download theme</a></li>
+                        <li class="divider"></li>
                         <li><a href="/">Close</a></li>
                     </ul>
                 </li>

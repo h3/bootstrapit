@@ -27,12 +27,7 @@
                     <div class="navbar navbar-fixed-top">
                         <div class="navbar-inner">
                             <div class="container">
-                                <span class="brand">Bootstrap<b><em style="color:white;">it</em></b></span>
                                 <ul class="nav">
-                                    <li class="divider-vertical"></li>
-                                    {% include "bootstrapit/bootstrap.nav.html" %}
-                                </ul>
-                                <ul class="nav pull-right">
                                     <li class="divider-vertical"></li>
                                     <li class="dropdown">
                                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
@@ -44,6 +39,10 @@
                                             <li><a href="#">Revisions</a></li>
                                         </ul>
                                     </li>
+                                </ul>
+                                <ul class="nav">
+                                    <li class="divider-vertical"></li>
+                                    {% include "bootstrapit/bootstrap.nav.html" %}
                                 </ul>
                             </div>
                         </div>
