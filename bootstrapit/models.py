@@ -2,7 +2,7 @@
 
 import os
 
-from django.conf import settings
+from django.http import Http404
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -29,6 +29,12 @@ class Theme(models.Model):
     date_created  = models.DateTimeField(_('created'), auto_now_add=True)
     date_modified = models.DateTimeField(_('created'), auto_now=True)
     rendered_css = models.TextField(_('rendered CSS'), blank=True, null=True)
+
+    def get_static_url(self):
+        return "bootstrap/%s/less/" % self.bootstrap_version
+
+    def get_file_url(self, filename):
+        return self.get_static_url() + filename
 
     def __unicode__(self):
         return u'%s (%s)' % (self.name, self.bootstrap_version)

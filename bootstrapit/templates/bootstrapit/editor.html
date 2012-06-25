@@ -19,7 +19,7 @@
         <script src="{{ STATIC_URL }}bootstrapit/colorpicker/js/bootstrap-colorpicker.js"></script>
         <script src="{{ STATIC_URL }}bootstrapit/js/editor.js"></script>
     </head>
-    <body data-less-path="{{ MEDIA_URL }}bootstrap/2.0.4/less/">
+    <body data-bootstrappath-path="{{ theme.get_static_url }}">
         {% csrf_token %}
         <div class="container-fluid">
             <div class="row-fluid">
@@ -51,6 +51,7 @@
             </div>
             <div id="bootstrapit-editor" 
                  data-theme-id="{{ theme.pk }}"
+                 data-theme-slug="{{ theme.slug }}"
                  data-default-file-src="{{ default_file.src }}"
                  data-default-file-label="{{ default_file.label }}"
                  data-default-file-type="{{ default_file.type }}"></div>

@@ -1,3 +1,5 @@
+from django.conf import settings
+
 """
  Instead of using a model to store different bootstrap versions we will use
  a configuration since we already need to setup file mapping by hand for each versions.
@@ -12,6 +14,11 @@
  - Bootstrapit will go through each specified bootstrap versions and download them if they aren't already present
 
 """
+
+
+
+MEDIA_URL  = getattr(settings, 'BOOTSTRAPIT_MEDIA_URL', settings.MEDIA_URL)
+MEDIA_ROOT = getattr(settings, 'BOOTSTRAPIT_MEDIA_ROOT', settings.MEDIA_ROOT)
 
 BOOTSTRAPIT_BOOTSTRAP_VERSIONS = {
     '2.0.4': 'https://github.com/twitter/bootstrap/tarball/v2.0.4',        

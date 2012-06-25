@@ -2,9 +2,11 @@
 
 {% block bootstrapit.css %}
 {% if not theme_list %}
-<link href="{% url "bootstrapit-file-backend" theme.slug theme.version "less/bootstrap.less" %}" rel="stylesheet/less" type="text/css">
-<link href="{% url "bootstrapit-file-backend" theme.slug theme.version "less/responsive.less" %}" rel="stylesheet/less" type="text/css">
-<link href="{% url "bootstrapit-file-backend" theme.slug theme.version "docs/assets/css/docs.css" %}" rel="stylesheet" type="text/css">
+<link href="{% url bootstrapit-file-backend theme=theme.slug filepath="bootstrap.less" %}" rel="stylesheet/less" type="text/css">
+{% comment %}
+<link href="{% url "bootstrapit-file-backend" theme=theme.slug filepath="less/responsive.less" %}" rel="stylesheet/less" type="text/css">
+<link href="{% url "bootstrapit-file-backend" theme=theme.slug filepath="docs/assets/css/docs.css" %}" rel="stylesheet" type="text/css">
+{% endcomment %}
 <link rel="stylesheet" href="{{ STATIC_URL }}bootstrapit/css/site.css">
 {% endif %}
 {% endblock %}

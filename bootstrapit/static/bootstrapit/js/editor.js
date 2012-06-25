@@ -8,10 +8,14 @@
 
     $(window)
         .ready(function(){
-            window.opener.onEditorLoad();
+            try {
+                window.opener.onEditorLoad();
+            } catch (e) {};
         })
         .bind('beforeunload.bootstrapit', function(e) {
-            window.opener.onEditorClose();
+            try {
+                window.opener.onEditorClose();
+            } catch (e) {};
         })
         .bind('resize.bootstrapit', function(e) {
             var h = $(window).height() - 110;
@@ -75,7 +79,7 @@
         this.createViewport = function(filename, title) {
             $('.viewport').hide();
             var editor,
-                lesspath = $('body').data('less-path'),
+                bootstrappath = $('body').data('bootstrappath-path'),
                 viewport = $([
                 '<div class="viewport" data-file="', filename,'">',
                     '<div class="viewport-toolbar pull-right">',
@@ -101,7 +105,8 @@
                         viewport.find('.viewport-content'));
 
             $(window).trigger('resize.bootstrapit');
-            this.loadFile(lesspath + filename, editor);
+            console.log('/api/file/'+ $('#bootstrapit-editor').data('theme-slug') +"/"+ filename, editor);
+            this.loadFile('/api/file/'+ $('#bootstrapit-editor').data('theme-slug') +"/"+ filename, editor);
 
             this.viewports[filename] = {
                 title: title,

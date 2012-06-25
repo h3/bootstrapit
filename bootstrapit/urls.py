@@ -9,11 +9,15 @@ urlpatterns=patterns('',
 
     url(r'^(?P<theme>[\d\w-]+)$', DesignEditView.as_view(), name='bootstrapit-edit'),
 
-    url(r'^edit/(?P<theme>[\d\w-]+)$', 
+    url(r'^(?P<theme>[\d\w-]+)/edit$',
         login_required(EditorView.as_view()), name='bootstrapit-editor'),
 
     url(r'^api/editor/$', login_required(EditorBackend.as_view()),
-        name='bootstrapit-backend'),
+        name='bootstrapit-editor-backend'),
+
+    url(r'^api/file/(?P<theme>[\d\w-]+)/(?P<filepath>.*)$',
+        login_required(FileBackend.as_view()),
+        name='bootstrapit-file-backend'),
 
    #url(r'all$',          HomeView.as_view(),     name='bootstrapit-home'),
    #url(r'^editor/recive$', EditorReciveAjax.as_view(), name='bootstrapit-editor-recive'),
