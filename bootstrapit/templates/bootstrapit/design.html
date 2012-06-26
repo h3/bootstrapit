@@ -1,7 +1,7 @@
 {% extends "bootstrapit/base.html" %}
 
 {% block bootstrapit.css %}
-{% if not theme_list or not theme %}
+{% if not theme or request.user.is_anonymous %}
 <link href="{{ STATIC_URL }}bootstrapit/bootstrap/2.0.4/css/bootstrap.css" rel="stylesheet/less" type="text/css">
 <link href="{{ STATIC_URL }}bootstrapit/bootstrap/2.0.4/css/bootstrap-responsive.css" rel="stylesheet/less" type="text/css">
 <link href="{{ STATIC_URL }}bootstrapit/css/docs.css" rel="stylesheet" type="text/css">
