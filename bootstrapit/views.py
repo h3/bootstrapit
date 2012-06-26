@@ -154,7 +154,8 @@ class DesignView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(DesignView, self).get_context_data(**kwargs)
-        context['theme_list'] = Theme.objects.filter(owner=self.request.user)
+        if not self.request.user.is_anonymous():
+            context['theme_list'] = Theme.objects.filter(owner=self.request.user)
         return context
 
 class DesignEditView(TemplateView):
