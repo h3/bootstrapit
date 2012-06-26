@@ -50,6 +50,8 @@ class EditorBackend(ProcessFormView, JSONResponseMixin):
         filename = request.POST.get('filename')
         content  = request.POST.get('content')
 
+        #TODO vérifier si le nom de fichier est possible
+
         if not (content and filename):
             return self.render_to_response({'status':  'error',
                                             'message': 'Missing arguments'})
