@@ -94,11 +94,7 @@ class FileBackend(ProcessFormView, JSONResponseMixin):
     Handles files
     """
     def get(self, request, *args, **kwargs):
-        theme = Theme.objects.filter(slug=kwargs.get('theme'),owner = request.user)
-        if theme.count() > 0:
-            theme = theme[0]
-        else:
-            theme = Theme.objects.get_or_create(slug='new',owner=request.user)
+        theme = get_object_or_404(Theme,slug=kwargs.get('theme'),owner = request.user)
 
         try:
             # return file from db
@@ -157,9 +153,10 @@ class DesignView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(DesignView, self).get_context_data(**kwargs)
-        context['theme_list'] = Theme.objects.filter(owner=self.request.user)
-        if context['theme_list']:
-            context['theme'] = context['theme_list'][0]
+        if not self.request.user.is_anonymous():
+            context['theme_list'] = Theme.objects.filter(owner=self.request.user)
+            #if context['theme_list']:
+            #    context['theme'] = context['theme_list'][0]
         return context
 
 class DesignEditView(TemplateView):

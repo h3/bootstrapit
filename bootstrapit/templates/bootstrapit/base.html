@@ -35,7 +35,7 @@
 
     $(function(){
         $('#bootstrapit-open-editor-btn').bind('click.bootstrapit', function() {
-            ew = open("/edit/{{ theme.slug }}");
+            ew = open("{% url bootstrapit-editor theme=theme.slug %}");
         });
     });
     {% endif %}
