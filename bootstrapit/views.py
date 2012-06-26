@@ -95,10 +95,11 @@ class FileBackend(ProcessFormView, JSONResponseMixin):
     """
     def get(self, request, *args, **kwargs):
         theme = get_object_or_404(Theme,slug=kwargs.get('theme'),owner = request.user)
-
         try:
             # return file from db
             document = theme.themefile_set.get(name=kwargs.get('filepath'))
+            print "*********",document,"**********************"
+            print document.content
             return HttpResponse(document.content)
         except ThemeFile.DoesNotExist:
             # return real static file
@@ -134,7 +135,7 @@ class FileBackend(ProcessFormView, JSONResponseMixin):
                     'choices' : settings.BOOTSTRAPIT_BOOTSTRAP_VERSIONS.items()})
         
         less, created = theme.themefile_set.get_or_create(name=filename)
-        msg = created and 'file created' or 'file saved'
+        msg = 'file created' if created else 'file saved'
 
         less.content = content
 

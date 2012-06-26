@@ -14,7 +14,6 @@ from bootstrapit.conf import settings
 
 VERSIONS = settings.BOOTSTRAPIT_BOOTSTRAP_VERSIONS.items()
 
-
 class Theme(models.Model):
     """
     This model holds saved custom themes
@@ -32,6 +31,7 @@ class Theme(models.Model):
 
     def __unicode__(self):
         return u'%s (%s)' % (self.name, self.bootstrap_version)
+
 
     def get_static_url(self):
         return "/bootstrap/%s/" % self.bootstrap_version
