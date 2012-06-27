@@ -1,3 +1,4 @@
+{% load socketio_tags %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -18,6 +19,38 @@
         <link href="{{ STATIC_URL }}bootstrapit/colorpicker/css/colorpicker.css" rel="stylesheet">
         <script src="{{ STATIC_URL }}bootstrapit/colorpicker/js/bootstrap-colorpicker.js"></script>
         <script src="{{ STATIC_URL }}bootstrapit/js/editor.js"></script>
+        {% socketio %}
+        <script>
+        var socket, init;
+
+        var onConnect = function() {
+            console.log('connected !!! ', this);
+            socket.subscribe('theme');
+            testt();
+        };
+
+        var onDisconnect = function() {
+            setTimeout(init, 1000);
+        };
+
+        var onMessage = function(data) {
+            console.log('msg:: ', data);
+        };
+
+        init = function() {
+            socket = new io.Socket();
+            socket.connect();
+            socket.on('connect', onConnect);
+            socket.on('disconnect', onDisconnect);
+            socket.on('message', onMessage);
+        };
+
+        init();
+
+        function testt() {
+            return socket.send({theme: "{{ theme.slug }}", action: 'ready', name: 'test'});
+        }
+        </script>
     </head>
     <body data-bootstrappath-path="{{ theme.get_static_url }}">
         {% csrf_token %}

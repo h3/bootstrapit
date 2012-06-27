@@ -1,4 +1,5 @@
 {% extends "bootstrapit/base.html" %}
+{% load socketio_tags %}
 
 {% block bootstrapit.css %}
 {% if not theme or request.user.is_anonymous %}
@@ -11,6 +12,38 @@
 <link href="{% url bootstrapit-file-backend theme=theme.slug filepath="docs/assets/css/docs.css" %}" rel="stylesheet" type="text/css">
 {% endif %}
 <link rel="stylesheet" href="{{ STATIC_URL }}bootstrapit/css/site.css">
+{% socketio %}
+<script>
+var socket, init;
+
+var onConnect = function() {
+    console.log('connected !!! ', this);
+    socket.subscribe('theme-{{ theme.slug }}');
+    testt();
+};
+
+var onDisconnect = function() {
+    setTimeout(init, 1000);
+};
+
+var onMessage = function(data) {
+    console.log('msg:: ', data);
+};
+
+init = function() {
+    socket = new io.Socket();
+    socket.connect();
+    socket.on('connect', onConnect);
+    socket.on('disconnect', onDisconnect);
+    socket.on('message', onMessage);
+};
+
+init();
+
+function testt() {
+    return socket.send({theme: "{{ theme.slug }}", action: 'ready', name: 'test'});
+}
+</script>
 {% endblock %}
 
 
